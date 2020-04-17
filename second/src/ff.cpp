@@ -22,7 +22,9 @@ using namespace std;
  */
 #define FIXED_FLOAT(x, y) fixed<<setprecision(y)<<(x)
 
+
 const int MAX_INT = numeric_limits<int>::max();
+
 
 FordFulkerson::FordFulkerson(FlowGraph* G, int s, int t)
 {
@@ -165,10 +167,8 @@ void task1(int argc, char** argv)
     getline(graphFile, line);
     stringstream ss(line);
 
-    int V, E, s, t, sofar = 0;
-    ss>>V>>E>>s>>t;
-
-    unordered_map<int, int> vertexMap, inverseVertexMap;
+    int V, E;
+    ss>>V>>E;
 
     FlowGraph graph(V);
     while (getline(graphFile, line))
@@ -177,24 +177,12 @@ void task1(int argc, char** argv)
         stringstream ss(line);
 
         ss>>x>>y>>cap;
-        if (!vertexMap[x])
-        {
-            sofar++;
-            vertexMap[x] = sofar;
-            inverseVertexMap[sofar] = x;
-        }
-        if (!vertexMap[y])
-        {
-            sofar++;
-            vertexMap[y] = sofar;
-            inverseVertexMap[sofar] = y;
-        }
-        graph.addEdge(vertexMap[x] - 1, vertexMap[y] - 1, cap);
+        graph.addEdge(x, y, cap);
     }
     graphFile.close();
 
-    s = vertexMap[s] - 1;
-    t = vertexMap[t] - 1;
+    int s = graph.source();
+    int t = graph.sink();
 
     clock_t start = clock();
     FordFulkerson ff(&graph, s, t);
@@ -206,36 +194,18 @@ void task1(int argc, char** argv)
     cout<<"Graph Info:"<<endl;
     cout<<"\tVertices - "<<V<<", Edges - "<<E<<endl<<endl;
     cout<<"MaxFlow-MinCut Solution :"<<endl;
-    cout<<"\tSource - "<<inverseVertexMap[s + 1]<<", Target - "<<inverseVertexMap[t + 1]<<endl;
+    cout<<"\tSource - "<<s<<", Target - "<<t<<endl;
     cout<<"\tMax Flow Value - "<<ff.flow()<<endl<<endl;
     cout<<"\tNo. of vertices in min cut - "<<cut.size()<<endl;
     cout<<"\tVertices in min cut - "<<endl<<"\t\t";
     for (int v : cut)
     {
-        cout<<inverseVertexMap[v + 1]<<" ";
+        cout<<v<<" ";
     }
     cout<<endl<<endl;
 	cout<<"\tTime Taken - "<<FIXED_FLOAT(processingTime, 6)<<" seconds"<<endl;
 
     if(argc == 4) { writeResults(argv[3], argv[2], V, E, &ff,  processingTime); }
-}
-
-
-void dfsMarkBipartiteSet(int v, vector<bool>& visited, vector<bool>& component, FlowGraph* G)
-{
-    visited[v] = true;
-
-    for (FlowEdge* e : G->adj(v))
-    {
-        int w = e->other(v);
-        if (!visited[w])
-        {
-            visited[w] = true;
-            component[w] = !component[v];
-            dfsMarkBipartiteSet(w, visited, component, G);
-        }
-        else if (component[w] == component[v]) { throw invalid_argument("Not a bipartite graph."); }
-    }
 }
 
 
@@ -253,10 +223,6 @@ void task3(int argc, char** argv)
 
     int n = n1 + n2, V = n + 2, s = n, t = n + 1;
 
-    // int sofar1 = 0, sofar2 = n1;
-    // unordered_map<int, int> vertexMap1, inverseVertexMap1;
-    // unordered_map<int, int> vertexMap2, inverseVertexMap2;
-
     FlowGraph graph(V);
     while (getline(graphFile, line))
     {
@@ -264,36 +230,20 @@ void task3(int argc, char** argv)
         stringstream ss(line);
 
         ss>>x>>y;
-        // if (!vertexMap1[x])
-        // {
-        //     sofar1++;
-        //     vertexMap1[x] = sofar1;
-        //     inverseVertexMap1[sofar1] = x;
-        // }
-        // if (!vertexMap2[y])
-        // {
-        //     sofar2++;
-        //     vertexMap2[y] = sofar2;
-        //     inverseVertexMap2[sofar2] = y;
-        // }
-        graph.addEdge(x - 1, y - 1 + n1, 1);
+        x = x - 1;
+        y = y - 1 + n1;
+        graph.addEdge(x, y, 1);
     }
     graphFile.close();
 
-    vector<bool> visited(n, false), component(n, false);
-    for (int i = 0; i < n; i++)
+    for (int v = 0; v < n1; v++)
     {
-        if (!visited[i])
-        {
-            component[i] = true;
-            dfsMarkBipartiteSet(i, visited, component, &graph);
-        }
+        graph.addEdge(s, v, 1);
     }
 
-    for (int v = 0; v < n; v++)
+    for (int v = n1; v < n; v++)
     {
-        if (component[v]) { graph.addEdge(s, v, 1); }
-        else { graph.addEdge(v, t, 1); }
+        graph.addEdge(v, t, 1);
     }
 
     clock_t start = clock();
@@ -329,7 +279,7 @@ int main(int argc, char** argv)
 {
     if (argc < 3 || argc > 4) { displayError("No. of command-line arguments do not match."); }
 
-    if (!strcmp("maxflow", argv[1]))
+    if (!strcmp("max_flow", argv[1]))
     {
         task1(argc, argv);
         return 0;

@@ -107,6 +107,17 @@ class FlowGraph
          */
         std::vector<std::vector<FlowEdge*> > adjacent;
 
+
+        /**
+         * Stores the indegree of each vertex.
+         */
+        std::vector<int> indeg;
+
+        /**
+         * Stores the outdegree of each vertex.
+         */
+        std::vector<int> outdeg;
+
     public:
         /**
          * \brief Creates the FlowGraph object.
@@ -137,6 +148,18 @@ class FlowGraph
          * @param v - vertex for which we want the adjacency list
          */
         std::vector<FlowEdge*>& adj(int v);
+
+        /**
+         * \brief Returns the source vertex of the graph.
+         *
+         */
+        int source();
+
+        /**
+         * \brief Returns the sink vertex of the graph.
+         *
+         */
+        int sink();
 };
 
 #endif

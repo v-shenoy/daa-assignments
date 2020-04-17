@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> DAA Assignment 2</title>
+</head>
+<body>
+	<h2> Other Information </h2>
+	<h3> Group Members </h3>
+	<ul>
+		<li> Vighnesh Shenoy - 2016B4A70927H </li>
+		<li> Parth Anand - 2016B4A70873 </li>
+		<li> Shivaank Agarwal - 2016B4A70675H </li>
+		<li> Akshat Govil - 2016B4A70502H </li>
+    </ul>
+    <h3> Timing Analysis </h3>
+    <ul>
+        <li>
+            <p>
+                The running time of the algorithm is O(E * f), where E is the number of Edges, and f is the value of the maximum flow. The FordFulkerson algorithm uses a BFS to find an augmenting path. Then the bottleneck residual capacity is calculated along the path, and the flow on each of the edges is increased/decreased by that amount.
+            </p>
+        </li>
+        <li>
+            <p>
+                In order to use the MaxFlow algorithm to solve the Bipartite matching, we add an artificial source and sink. We add an edge from source to all nodes in the first bipartite set, and an edge from all the nodes in the second bipartite set to the sink. We retain the normal edges in the original graph. And all the edges in this flow network are made to have capacity 1.
+
+                In the Bipartite matching problem, the flow is bounded by V / 2, and hence the complexity can also be written as O(E * V).
+            </p>
+        </li>
+    </ul>
+	<h3>Assumptions</h3>
+	<ul>
+		<li>
+			The program expects certain command-line arguments to be provided for it to run
+			correctly.
+			<br>
+			<br>
+            Program Usage -
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;./ff problem graphFile [resultsFile]
+            <br><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;problem - max_flow or bipartite_matching
+			<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;graphFile - file containing information about graph
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;resultsFile - optional file for writing back results
+        </li>
+        <br>
+		<li>
+            The format of the graph file for Task 1 is as follows -
+            <p>
+                The first line contains two space-seperated integers V, E where V represents
+                the number of vertices in the flow network, and E represents the number of edges.
+            </p>
+            <p>
+                All the following lines have three space-seperated integers x, y, cap representing
+                an edge from the vertex x to vertex y with capacity cap.
+            </p>
+            <p>
+                It also assumes that there is exactly one node with indegree 0 (source), and exactly one node with outdegree 0 (sink).
+            </p>
+        </li>
+        <li>
+            The format of the graph file for Task 3 is as follows -
+            <p>
+                The first line contains three space-seperated integers n1, n2, E where n1 represents
+                the number of vertices in the first bipartite set, n2 represents number of vertices in the second
+                bipartite set and E represents the number of edges.
+            </p>
+            <p>
+                Each following line contains two space-seprate integers x, y representing an edge from vertex x to vertex y.
+            </p>
+            <p>
+                The vertex numbers in each column are independend. Number 1 in first column and number 2 in second column represent two different vertices.
+            </p>
+        </li>
+	</ul>
+	<h3>Experimental Analysis</h3>
+	<ol>
+        <li>
+            <b> Max Flow - ff_1.txt </b>
+            <br>
+            Graph Info -
+            <ul>
+                <li> No. of vertices - 955 </li>
+                <li> No. of edges - 116535 </li>
+                <li> Max. Flow Value - 2833341 </li>
+            </ul>
+            Time Taken -
+            <ol>
+                <li> 1.097792 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li>
+            <b> Max Flow - ff_2.txt </b>
+            <br>
+            Graph Info -
+            <ul>
+                <li> No. of vertices - 2000 </li>
+                <li> No. of edges - 493202 </li>
+                <li> Max. Flow Value - 44629 </li>
+            </ul>
+            Time Taken -
+            <ol>
+                <li> 2.071448 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li>
+            <b> Max Flow - ff_3.txt </b>
+            <br>
+            Graph Info -
+            <ul>
+                <li> No. of vertices - 2200 </li>
+                <li> No. of edges - 546864 </li>
+                <li> Max. Flow Value - 54767340 </li>
+            </ul>
+            Time Taken -
+            <ol>
+                <li> 71.894014 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li>
+            <b> Max Flow - ff_4.txt </b>
+            <br>
+            Graph Info -
+            <ul>
+                <li> No. of vertices - 4 </li>
+                <li> No. of edges - 5 </li>
+                <li> Max. Flow Value - 201 </li>
+            </ul>
+            Time Taken -
+            <ol>
+                <li> 0.000018 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li>
+            <b> Bipartite Matching - bm_brunson_revolution.txt </b>
+            <br>
+            Graph Info -
+            <ul>
+                <li> No. of vertices - 141 </li>
+                <li> No. of edges - 160 </li>
+                <li> Matching Size - 5 </li>
+            </ul>
+            Time Taken -
+            <ol>
+                <li> 0.000290 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li>
+            <b> Bipartite Matching - bm_collab.txt </b>
+            <br>
+            Graph Info -
+            <ul>
+                <li> No. of vertices - 38741 </li>
+                <li> No. of edges - 58595 </li>
+                <li> Matching Size - 12652 </li>
+            </ul>
+            Time Taken -
+            <ol>
+                <li> 175.784409 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li>
+            <b> Bipartite Matching - bm_moreno_crime.txt </b>
+            <br>
+            Graph Info -
+            <ul>
+                <li> No. of vertices - 2305 </li>
+                <li> No. of edges - 551 </li>
+                <li> Matching Size - 451 </li>
+            </ul>
+            Time Taken -
+            <ol>
+                <li> 0.318983 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li>
+            <b> Bipartite Matching - bm_test_case1.txt </b>
+            <br>
+            Graph Info -
+            <ul>
+                <li> No. of vertices - 10 </li>
+                <li> No. of edges - 10 </li>
+                <li> Matching Size - 5 </li>
+            </ul>
+            Time Taken -
+            <ol>
+                <li> 0.000039 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li>
+            <b> Bipartite Matching - bm_test_case4.txt </b>
+            <br>
+            Graph Info -
+            <ul>
+                <li> No. of vertices - 3798 </li>
+                <li> No. of edges - 59835 </li>
+                <li> Matching Size - 1285 </li>
+            </ul>
+            Time Taken -
+            <ol>
+                <li> 8.096933 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li>
+            <b> Bipartite Matching - bm_unicodelang.txt </b>
+            <br>
+            Graph Info -
+            <ul>
+                <li> No. of vertices - 1122 </li>
+                <li> No. of edges - 1255 </li>
+                <li> Matching Size - 188 </li>
+            </ul>
+            Time Taken -
+            <ol>
+                <li> 0.047497 seconds </li>
+            </ol>
+            <br>
+        </li>
+    </ol>
+    <h3> Plots </h3>
+    <ul>
+        <li> Max Flow Problem
+            <br>
+            <img src="results/max_flow.png" alt="max_flow">
+        </li>
+        <li> Bipartite Matching Problem
+            <br>
+            <img src="results/bipartite_matching.png" alt="bipartite_matching">
+        </li>
+    </ul>
+    <h3> Coding Issues </h3>
+    <ul>
+        <li>
+            <p>
+                The residual graph of a flow network is undirected. Usually an undirected edge x - y, is implemented as two
+                directed edges x -> y and y -> x in adjacency list representation. But, here, the edges needed to be dependent on each other. Since a change in flow of one, must be reflected on the other. This meant instead of storing edges indepdently, we store a common pointer to them in both adjaceny lists.
+            </p>
+        </li>
+    </ul>
+    <h3> References </h3>
+    <ol>
+        <li> Class Slides </li>
+        <li> Sedgewick, Robert; Wayne, Kevin (2011). Algorithms (4th ed.). Addison-Wesley Professional. </li>
+    </ol>
+</body>
+</html>

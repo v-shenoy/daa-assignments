@@ -57,7 +57,7 @@ void FlowEdge::addResidualFlowTo(int vertex, int delta)
 }
 
 
-FlowGraph::FlowGraph(int V) : adjacent(V)
+FlowGraph::FlowGraph(int V) : adjacent(V), indeg(V, 0), outdeg(V, 0)
 {
     this->V = V;
 }
@@ -70,6 +70,9 @@ int FlowGraph::noVertices()
 void FlowGraph::addEdge(int v, int w, int cap)
 {
     FlowEdge* e = new FlowEdge(v, w, cap);
+    outdeg[v]++;
+    indeg[w]++;
+
     adjacent[v].push_back(e);
     adjacent[w].push_back(e);
 }
@@ -77,4 +80,22 @@ void FlowGraph::addEdge(int v, int w, int cap)
 vector<FlowEdge*>& FlowGraph::adj(int v)
 {
     return adjacent[v];
+}
+
+int FlowGraph::source()
+{
+    for (int i = 0; i < V; i++)
+    {
+        if (!indeg[i]) { return i; }
+    }
+    throw invalid_argument("No source found");
+}
+
+int FlowGraph::sink()
+{
+    for (int i = 0; i < V; i++)
+    {
+        if (!outdeg[i]) { return i; }
+    }
+    throw invalid_argument("No sink found");
 }

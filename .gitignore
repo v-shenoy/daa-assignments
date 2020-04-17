@@ -35,3 +35,4 @@ bin/
 docs/
 graphs/
 *.html
+!info.html

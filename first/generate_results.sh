@@ -11,12 +11,12 @@ function exit_if_error() {
 	fi
 }
 
-g++ -o getScc scc.cpp
+make getScc
 exit_if_error
 
 for graph in $(ls graphs)
 do
     echo "Running graph - $graph"
-    .bin/getScc "./graphs/$graph" $1 $2 >/dev/null
+    ./bin/getScc "./graphs/$graph" $1 $2 >/dev/null
     exit_if_error
 done

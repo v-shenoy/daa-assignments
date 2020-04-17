@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> DAA Assignment 1</title>
+</head>
+<body>
+	<h2> Other Information </h2>
+	<h3> Group Members </h3>
+	<ul>
+		<li> Vighnesh Shenoy - 2016B4A70927H </li>
+		<li> Parth Anand - 2016B4A70873 </li>
+		<li> Shivaank Agarwal - 2016B4A70675H </li>
+		<li> Akshat Govil - 2016B4A70502H </li>
+    </ul>
+    <h3> Timing Analysis </h3>
+    <ul>
+        <li>
+            <p>
+                Since the run time of DFS is linear in the size of the graph, that is, O(V+E). The time-complexity 
+            of Kosaraju's algorithm is O(V+E) since it uses just two DFS-executions. This can also be seen from the graph,
+            of time vs graph-size.
+            </p>
+        </li>
+        <li>
+            <p>
+                The main plus-point of the DCSC algorithm was ease of parallelizability due to independent function 
+            calls of the divided problem. However, the serial execution suffers from a bad complexity in the worst Crashed
+            which is quadratic in the input vertices. The expected run time of the algorithm is O(ElgV). The actual serial implementation also suffers from some losses according to which data-structure is used to implement predecessor and successor data-structures. 
+            </p>
+        </li>
+    </ul>
+	<h3>Assumptions</h3>
+	<ul>
+		<li>
+			The program expects certain command-line arguments to be provided for it to run
+			correctly.
+			<br>
+			<br>
+            Program Usage - 
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;./getScc graphFile alg [resultsFile]
+            <br><br>
+            &nbsp;&nbsp;&nbsp;&nbsp;graphFile - file containing information about graph
+			<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;alg - algorithm to use for getting components (dfs or dcsc)
+            <br>
+            &nbsp;&nbsp;&nbsp;&nbsp;resultsFile - optional file for writing back results
+        </li>
+        <br>
+		<li>
+            The format of the graph file is as follows -
+            <p>
+                The first line contains two space-seperated integers V, E where V represents
+                the number of vertices in the digraph, and E represents the number of edges.
+            </p>
+            <p>
+                All the following lines have two space-seperated integers x, y representing
+                an edge from the vertex x to vertex y.
+            </p>
+		</li>
+	</ul>
+	<h3>Experimental Analysis</h3>
+	<ol>
+        <li> 
+            <b> test_1.txt </b>
+            <br>
+            Graph Info -
+            <ul> 
+                <li> No. of vertices - 7 </li>
+                <li> No. of edges - 6 </li>
+                <li> No. of strong components - 3 </li>
+                <li> No. of vertices in largest component - 3 </li> 
+            </ul>
+            Time Taken - 
+            <ol>
+                <li> DFS Algorithm - 0.000039 seconds </li>
+                <li> DCSC Algorithm - 0.000072 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li> 
+            <b> soc-sign-bitcoinalpha.txt </b>
+            <br>
+            Graph Info -
+            <ul> 
+                <li> No. of vertices - 3783 </li>
+                <li> No. of edges - 24186 </li>
+                <li> No. of strong components - 540 </li>
+                <li> No. of vertices in largest component - 3235 </li> 
+            </ul>
+            Time Taken - 
+            <ol>
+                <li> DFS Algorithm - 0.007355 seconds </li>
+                <li> DCSC Algorithm - 0.038595 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li> 
+            <b> p2p-Gnutella04.txt </b>
+            <br>
+            Graph Info -
+            <ul> 
+                <li> No. of vertices - 10876 </li>
+                <li> No. of edges - 39994 </li>
+                <li> No. of strong components - 6560 </li>
+                <li> No. of vertices in largest component - 4317 </li> 
+            </ul>
+            Time Taken - 
+            <ol>
+                <li> DFS Algorithm - 0.023167 seconds </li>
+                <li> DCSC Algorithm - 3.707814 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li> 
+            <b> wiki-Vote.txt </b>
+            <br>
+            Graph Info -
+            <ul> 
+                <li> No. of vertices - 7115 </li>
+                <li> No. of edges - 103689 </li>
+                <li> No. of strong components - 5816 </li>
+                <li> No. of vertices in largest component - 1300 </li> 
+            </ul>
+            Time Taken - 
+            <ol>
+                <li> DFS Algorithm - 0.021762 seconds </li>
+                <li> DCSC Algorithm - 1.736632 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li> 
+            <b> soc-Epinions1.txt </b>
+            <br>
+            Graph Info -
+            <ul> 
+                <li> No. of vertices - 75879 </li>
+                <li> No. of edges - 508837 </li>
+                <li> No. of strong components - 42176 </li>
+                <li> No. of vertices in largest component - 32223 </li> 
+            </ul>
+            Time Taken - 
+            <ol>
+                <li> DFS Algorithm - 0.182977 seconds </li>
+                <li> DCSC Algorithm - 77.342924 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li> 
+            <b> soc-Slashdot0902.txt </b>
+            <br>
+            Graph Info -
+            <ul> 
+                <li> No. of vertices - 82168 </li>
+                <li> No. of edges - 948464 </li>
+                <li> No. of strong components - 10559 </li>
+                <li> No. of vertices in largest component - 71307 </li> 
+            </ul>
+            Time Taken - 
+            <ol>
+                <li> DFS Algorithm - 0.318967 seconds </li>
+                <li> DCSC Algorithm - 11.843408 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li> 
+            <b> twitter_combined.txt </b>
+            <br>
+            Graph Info -
+            <ul> 
+                <li> No. of vertices - 81306 </li>
+                <li> No. of edges - 1768149 </li>
+                <li> No. of strong components - 12248 </li>
+                <li> No. of vertices in largest component - 68413 </li> 
+            </ul>
+            Time Taken - 
+            <ol>
+                <li> DFS Algorithm - 0.488015 seconds </li>
+                <li> DCSC Algorithm - 14.497298 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li> 
+            <b> web-Stanford.txt </b>
+            <br>
+            Graph Info -
+            <ul> 
+                <li> No. of vertices - 281903 </li>
+                <li> No. of edges - 2312497 </li>
+                <li> No. of strong components - 29914 </li>
+                <li> No. of vertices in largest component - 150532 </li> 
+            </ul>
+            Time Taken - 
+            <ol>
+                <li> DFS Algorithm - 0.719150 seconds </li>
+                <li> DCSC Algorithm - 63.969916 seconds </li>
+            </ol>
+            <br>
+        </li>
+        <li> 
+            <b> web-Google.txt </b>
+            <br>
+            Graph Info -
+            <ul> 
+                <li> No. of vertices - 875713 </li>
+                <li> No. of edges - 5105039 </li>
+                <li> No. of strong components - 371764 </li>
+                <li> No. of vertices in largest component - 434818 </li> 
+            </ul>
+            Time Taken - 
+            <ol>
+                <li> DFS Algorithm -2.149857 seconds </li>
+                <li> DCSC Algorithm - Crashed due to excess memory usage </li>
+            </ol>
+            <br>
+        </li>
+        <li> 
+            <b> web-BerkStan.txt </b>
+            <br>
+            Graph Info -
+            <ul> 
+                <li> No. of vertices - 685230 </li>
+                <li> No. of edges - 7600595 </li>
+                <li> No. of strong components - 109406 </li>
+                <li> No. of vertices in largest component - 334857 </li> 
+            </ul>
+            Time Taken - 
+            <ol>
+                <li> DFS Algorithm - 1.663475 seconds </li>
+                <li> DCSC Algorithm - Crashed due to excess memory usage </li>
+            </ol>
+            <br>
+        </li>
+    </ol>
+    <h3> Plots </h3>
+    <ul>
+        <li> DFS Results
+            <br>
+            <img src="results/dfs_results.png" alt="dfs_results">
+        </li>
+        <li> DCSC Results
+            <br>
+            <img src="results/dcsc_results.png" alt="dcsc_results">
+        </li>
+        <li> Comparison (ratio of dcsc to dfs time vs size)
+            <br>
+            <img src="results/comparison.png" alt="comparison">
+        </li>
+    </ul>
+    <h3> Coding Issues </h3>
+    <ul>
+        <li>
+            <p>
+                The Depth-First-Search based algorithm was straight-forward to implement. The two DFS-executions
+            were implemented with the help of the stack ADT present in the C++ Standard Template Library (STL).
+            </p>
+        </li>
+        <li>
+            <p>
+                The Divide-And-Conquer based algorithm was a bit tricky to implement, since it runs on subgraphs in its
+            recursive calls. The vertices in the subgraph had to be calculated at each stage, and stored in an efficient
+            data structure, a reference to which was passed in further calls. An efficient data-structure was also to be used for the predecessor and descendent sets. We used an STL vector of integers to denote
+            vertices in the subgraph, and a boolean vector to represent predecessor and descendent sets.
+            </p>
+        </li>
+        <li>
+            <p>
+                Our initial assumption was that the vertices are numbered from [0, V-1] where V is the total number of edges.
+            However, in some graph files, this was not true. We fixed this by having the DiGraph data-structure be unaware of the actual numbers and keep the internal numbering from [0, V-1]. Conversions to-and-fro was done while inserting edges, and printing components using an unordered_map from the C++ STL.
+            </p>
+        </li>
+    </ul>
+    <h3> References </h3>
+    <ol>
+        <li> Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein. 2009. Introduction to Algorithms, Third Edition (3rd. ed.). The MIT Press.</li>
+        <li> Don Coppersmith, Lisa Fleischer, Bruce Hendrickson, and Ali. A Divide-and-Conquer Algorithm for Identifying Strongly Connected Components. Pinar. </li>
+    </ol>
+</body>
+</html>
