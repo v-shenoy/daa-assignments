@@ -22,6 +22,7 @@ using namespace std;
  */
 #define FIXED_FLOAT(x, y) fixed<<setprecision(y)<<(x)
 
+const int MAX_INT = numeric_limits<int>::max();
 
 FordFulkerson::FordFulkerson(FlowGraph* G, int s, int t)
 {
@@ -39,6 +40,7 @@ FordFulkerson::FordFulkerson(FlowGraph* G, int s, int t)
         }
         delta /= 2;
     }
+    fill(parentEdge.begin(), parentEdge.end(), nullptr);
 }
 
 void FordFulkerson::initDelta(FlowGraph* G)
@@ -64,11 +66,11 @@ void FordFulkerson::initDelta(FlowGraph* G)
 bool FordFulkerson::hasAugmentingPath(FlowGraph* G, int s, int t)
 {
     fill(visited.begin(), visited.end(), false);
-    fill(parentEdge.begin(), parentEdge.end(), nullptr);
 
     queue<int> q;
     q.push(s);
     visited[s] = true;
+    parentEdge[s] = nullptr;
     while (!q.empty())
     {
         int v = q.front();
@@ -79,8 +81,7 @@ bool FordFulkerson::hasAugmentingPath(FlowGraph* G, int s, int t)
         for (FlowEdge* e : G->adj(v))
         {
             int w = e->other(v);
-            int cap = e->residualCapacityTo(w);
-            if (cap >= delta && cap > 0 && !visited[w])
+            if (e->residualCapacityTo(w) >= delta && !visited[w])
             {
                 parentEdge[w] = e;
                 visited[w] = true;
@@ -93,10 +94,9 @@ bool FordFulkerson::hasAugmentingPath(FlowGraph* G, int s, int t)
 
 void FordFulkerson::augment(int s, int t)
 {
-    int bottleneck = numeric_limits<int>::max();
+    int bottleneck = MAX_INT;
     for (int v = t; v != s; v = parentEdge[v]->other(v))
     {
-        FlowEdge* e = parentEdge[v];
         bottleneck = min(bottleneck, parentEdge[v]->residualCapacityTo(v));
     }
 
@@ -134,21 +134,32 @@ inline void displayError(string errorMsg)
 {
     cerr<<"Error - "<<errorMsg<<endl;
     cerr<<"Usage -\n\t./ff task graphFile [resultsFile]"<<endl<<endl;
-    cerr<<"\task - maxflow or bipartite_matching"<<endl;
+    cerr<<"\ttask - maxflow or bipartite_matching"<<endl;
     cerr<<"\tgraphFile - file containing information about graph"<<endl;
     cerr<<"\tresultsFile - optionally write a result to a file"<<endl;
     exit(EXIT_FAILURE);
 }
 
 
-void task1(char** argv)
+inline void writeResults(char* fileName, char* graphName, int V, int E, FordFulkerson* ff, double processingTime)
+{
+    ofstream resultsFile(fileName, ios_base::app);
+
+    if(!resultsFile.is_open()) { displayError("Cannot open results file."); }
+    resultsFile<<graphName<<" ";
+    resultsFile<<V<<" ";
+    resultsFile<<E<<" ";
+    resultsFile<<ff->flow()<<" ";
+    resultsFile<<FIXED_FLOAT(processingTime, 6)<<endl;
+    resultsFile.close();
+}
+
+
+void task1(int argc, char** argv)
 {
 
     ifstream graphFile(argv[2]);
-    if (!graphFile.is_open())
-    {
-        displayError("Cannot open graph file.");
-    }
+    if (!graphFile.is_open()) { displayError("Cannot open graph file."); }
 
     string line;
     getline(graphFile, line);
@@ -205,6 +216,8 @@ void task1(char** argv)
     }
     cout<<endl<<endl;
 	cout<<"\tTime Taken - "<<FIXED_FLOAT(processingTime, 6)<<" seconds"<<endl;
+
+    if(argc == 4) { writeResults(argv[3], argv[2], V, E, &ff,  processingTime); }
 }
 
 
@@ -221,32 +234,28 @@ void dfsMarkBipartiteSet(int v, vector<bool>& visited, vector<bool>& component, 
             component[w] = !component[v];
             dfsMarkBipartiteSet(w, visited, component, G);
         }
-        else if (component[w] == component[v])
-        {
-            throw invalid_argument("Not a bipartite graph.");
-        }
+        else if (component[w] == component[v]) { throw invalid_argument("Not a bipartite graph."); }
     }
 }
 
 
-void task3(char** argv)
+void task3(int argc, char** argv)
 {
     ifstream graphFile(argv[2]);
-    if (!graphFile.is_open())
-    {
-        displayError("Cannot open graph file.");
-    }
+    if (!graphFile.is_open()) { displayError("Cannot open graph file."); }
 
     string line;
     getline(graphFile, line);
     stringstream ss(line);
 
-    int n, E, sofar = 0;
-    ss>>n>>E;
+    int E, n1, n2;
+    ss>>n1>>n2>>E;
 
-    int V = n + 2, s = n, t = n + 1;
+    int n = n1 + n2, V = n + 2, s = n, t = n + 1;
 
-    unordered_map<int, int> vertexMap, inverseVertexMap;
+    // int sofar1 = 0, sofar2 = n1;
+    // unordered_map<int, int> vertexMap1, inverseVertexMap1;
+    // unordered_map<int, int> vertexMap2, inverseVertexMap2;
 
     FlowGraph graph(V);
     while (getline(graphFile, line))
@@ -255,19 +264,19 @@ void task3(char** argv)
         stringstream ss(line);
 
         ss>>x>>y;
-        if (!vertexMap[x])
-        {
-            sofar++;
-            vertexMap[x] = sofar;
-            inverseVertexMap[sofar] = x;
-        }
-        if (!vertexMap[y])
-        {
-            sofar++;
-            vertexMap[y] = sofar;
-            inverseVertexMap[sofar] = y;
-        }
-        graph.addEdge(vertexMap[x] - 1, vertexMap[y] - 1, 1);
+        // if (!vertexMap1[x])
+        // {
+        //     sofar1++;
+        //     vertexMap1[x] = sofar1;
+        //     inverseVertexMap1[sofar1] = x;
+        // }
+        // if (!vertexMap2[y])
+        // {
+        //     sofar2++;
+        //     vertexMap2[y] = sofar2;
+        //     inverseVertexMap2[sofar2] = y;
+        // }
+        graph.addEdge(x - 1, y - 1 + n1, 1);
     }
     graphFile.close();
 
@@ -280,7 +289,6 @@ void task3(char** argv)
             dfsMarkBipartiteSet(i, visited, component, &graph);
         }
     }
-
 
     for (int v = 0; v < n; v++)
     {
@@ -295,43 +303,41 @@ void task3(char** argv)
 
     cout<<"Graph Info:"<<endl;
     cout<<"\tVertices - "<<n<<", Edges - "<<E<<endl<<endl;
-    cout<<"Bipartite Matching Solution - "<<ff.flow()<<endl;
+    cout<<"Bipartite Matching Solution - "<<endl;
     cout<<"\tMaximum Matching Size - "<<ff.flow()<<endl;
-    cout<<"\tEdges in the matching - "<<endl<<endl;
+    cout<<"\tEdges in the matching - "<<endl;
     for (FlowEdge* e : graph.adj(s))
     {
-        if (e->flow() == 0) { continue; }
+        if (!e->flow()) { ; }
 
         int v = e->to();
         for (FlowEdge* ev : graph.adj(v))
         {
             int w = ev->other(v);
-            if (w == s || ev->flow() == 0) { continue; }
-            cout<<"\t\t("<<inverseVertexMap[v + 1]  <<", "<<inverseVertexMap[w + 1]<<")"<<endl;
+            if (w == s || !ev->flow()) { continue; }
+            cout<<"\t\t("<<v + 1<<", "<<w + 1 - n1<<")"<<endl;
             break;
         }
     }
     cout<<endl;
 	cout<<"\tTime Taken - "<<FIXED_FLOAT(processingTime, 6)<<" seconds"<<endl;
 
+    if(argc == 4) { writeResults(argv[3], argv[2], n, E, &ff,  processingTime); }
 }
 
 int main(int argc, char** argv)
 {
-    if (argc < 3 || argc > 4)
-    {
-        displayError("No. of command-line arguments do not match.");
-    }
+    if (argc < 3 || argc > 4) { displayError("No. of command-line arguments do not match."); }
 
     if (!strcmp("maxflow", argv[1]))
     {
-        task1(argv);
+        task1(argc, argv);
         return 0;
     }
 
     if (!strcmp("bipartite_matching", argv[1]))
     {
-        task3(argv);
+        task3(argc, argv);
         return 0;
     }
 

@@ -1,5 +1,6 @@
 #include<vector>
 #include<stdexcept>
+#include<cmath>
 
 #include "flow_graph.hpp"
 

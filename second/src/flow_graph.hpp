@@ -15,7 +15,7 @@ class FlowEdge
          *
          */
         int v;
-        
+
         /**
          * Destination vertex of the edge.
          *
@@ -86,6 +86,7 @@ class FlowEdge
          * @param delta - amount of change in the flow
          */
         void addResidualFlowTo(int vertex, int delta);
+
 };
 
 /**
@@ -100,7 +101,7 @@ class FlowGraph
          */
         int V;
 
-        /** 
+        /**
          * Adjacency list for storing the graph's edges.
          *
          */
