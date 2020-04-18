@@ -1,6 +1,6 @@
-./graphs/bm_brunson_revolution.txt 141 160 5 0.000290
-./graphs/bm_collab.txt 38741 58595 12652 175.784409
-./graphs/bm_moreno_crime.txt 2305 551 451 0.318983
-./graphs/bm_test_case1.txt 10 10 5 0.000039
-./graphs/bm_test_case4.txt 3798 59835 1285 8.096933
-./graphs/bm_unicodelang.txt 1122 1255 188 0.047497
+./graphs/bm_brunson_revolution.txt 141 160 5 0.000349
+./graphs/bm_collab.txt 38741 58595 12652 203.196297
+./graphs/bm_moreno_crime.txt 1380 1476 451 0.190489
+./graphs/bm_test_case1.txt 10 10 5 0.000029
+./graphs/bm_test_case4.txt 3798 59835 1285 8.926029
+./graphs/bm_unicodelang.txt 1122 1255 188 0.035994
